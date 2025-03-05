@@ -3,23 +3,41 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
 	targetString := flag.String("s", "", "Target string")
-	shift := flag.Bool("shift", false, "Produce wordlist where each byte incremented individually")
+	inc := flag.Bool("inc", false, "Produce wordlist where each byte incremented individually")
+	dec := flag.Bool("dec", false, "Produce wordlist where each byte decremented individually")
 
 	flag.Parse()
 
-	if *shift {
-		shiftBytes(*targetString)
+	if *targetString == "" {
+		fmt.Println("-s required")
+		os.Exit(2)
+	}
+
+	if *inc {
+		incBytes(*targetString)
+	}
+	if *dec {
+		decBytes(*targetString)
 	}
 }
 
-func shiftBytes(encString string) {
+func incBytes(encString string) {
 	for i, _ := range encString {
 		r := []rune(encString)
 		r[i]++
+		fmt.Println(string(r))
+	}
+}
+
+func decBytes(encString string) {
+	for i, _ := range encString {
+		r := []rune(encString)
+		r[i]--
 		fmt.Println(string(r))
 	}
 }
